@@ -63,5 +63,17 @@ namespace MovieApp.API.Controllers
                 return Ok("User deleted successfully");
             return StatusCode(500, "Failed to delete user");
         }
+
+        // POST: /api/User/AddViaFunction
+        [HttpPost("AddViaFunction")]
+        public async Task<IActionResult> AddUserViaFunction(string username, string email, string password)
+        {
+            var success = await _userBusinessService.AddUserViaFunctionAsync(username, email, password);
+            if (success)
+            {
+                return Ok("User added successfully via database function.");
+            }
+            return StatusCode(500, "Failed to add user via database function.");
+        }
     }
 }

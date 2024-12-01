@@ -43,5 +43,11 @@ namespace MovieApp.BusinessLayer
         {
             return await _userService.DeleteUserAsync(userId);
         }
+
+        // Add user via database function
+        public async Task<bool> AddUserViaFunctionAsync(string username, string email, string password)
+        {
+            return await _userService.AddUserViaFunctionAsync(username, email, password);
+        }
     }
 }

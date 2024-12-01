@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieApp.DataLayer.Models;
+using MovieApp.DataLayer.Services;
 
 namespace MovieApp.DataLayer
 {
@@ -11,8 +12,16 @@ namespace MovieApp.DataLayer
         public DbSet<User> users { get; set; } // DbSet til users
         public DbSet<UserRating> UserRatings { get; set; }
         public DbSet<SearchHistory> SearchHistory { get; set; } // Renamed DbSet for consistency
+        public DbSet<BestMatchResult> BestMatchResults { get; set; }
+        public DbSet<RatingsForMovieResult> RatingsForMovieResults { get; set; }
+        public DbSet<ExactMatchResult> ExactmatchResults { get; set; }
+        public DbSet<StringSearchResult> StringSearchResults { get; set; }
+        public DbSet<StructuredStringSearchResult> StructuredStringSearchResults { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+
         {
             // Bookmark mapping
             modelBuilder.Entity<Bookmark>(entity =>
@@ -47,6 +56,17 @@ namespace MovieApp.DataLayer
                 entity.Property(e => e.SearchTerm).HasColumnName("search_term");
                 entity.Property(e => e.SearchDate).HasColumnName("search_date");
             });
+
+            modelBuilder.Entity<BestMatchResult>().HasNoKey();
+            modelBuilder.Entity<RatingsForMovieResult>().HasNoKey();
+            modelBuilder.Entity<ExactMatchResult>().HasNoKey();
+            modelBuilder.Entity<CoplayerResult>().HasNoKey();
+            modelBuilder.Entity<BookmarkResult>().HasNoKey();
+            modelBuilder.Entity<SearchHistoryResult>().HasNoKey();
+            modelBuilder.Entity<PersonWordsResult>().HasNoKey();
+            modelBuilder.Entity<SimilarMoviesResult>().HasNoKey();
+            modelBuilder.Entity<StructuredStringSearchResult>().HasNoKey();
+
         }
     }
 }

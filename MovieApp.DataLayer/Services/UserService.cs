@@ -91,6 +91,23 @@ namespace MovieApp.DataLayer.Services
             }
         }
 
+        // Function Calls
+        public async Task<bool> AddUserViaFunctionAsync(string username, string email, string password)
+        {
+            try
+            {
+                await _dbContext.Database.ExecuteSqlRawAsync(
+                    "SELECT add_user({0}, {1}, {2})",
+                    username, email, password
+                );
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private string GenerateSalt()
         {
             var buffer = new byte[16];

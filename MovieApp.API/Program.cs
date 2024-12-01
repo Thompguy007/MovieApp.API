@@ -21,15 +21,63 @@ builder.Services.AddScoped<BookmarkService>();
 // Register UserService
 builder.Services.AddTransient<UserService>();
 
+// Bookmark
 builder.Services.AddScoped<BookmarkBusinessService>();
 builder.Services.AddScoped<UserBusinessService>();
 
+//User
 builder.Services.AddScoped<UserRatingBusinessService>();
 builder.Services.AddScoped<UserRatingService>();
 
+//SearchHistory
 builder.Services.AddScoped<SearchHistoryBusinessService>();
 builder.Services.AddScoped<SearchHistoryService>();
 
+// BestMatch
+builder.Services.AddScoped<BestMatchService>();
+builder.Services.AddScoped<BestMatchBusinessService>();
+
+//NameRating
+builder.Services.AddScoped<NameRatingService>();
+builder.Services.AddScoped<NameRatingBusinessService>();
+
+//RatingsForMovie
+builder.Services.AddScoped<RatingsForMovieService>();
+builder.Services.AddScoped<RatingsForMovieBusinessService>();
+
+//ExactMatch
+builder.Services.AddScoped<ExactMatchService>();
+builder.Services.AddScoped<ExactMatchBusinessService>();
+
+//FindCoPlayers
+builder.Services.AddScoped<FindCoplayersService>();
+builder.Services.AddScoped<FindCoplayersBusinessService>();
+//GetBookmarkDB
+builder.Services.AddScoped<GetBookmarksDbService>();
+builder.Services.AddScoped<GetBookmarksDbBusinessService>();
+//GetSearchHistory
+builder.Services.AddScoped<GetSearchHistoryDbService>();
+builder.Services.AddScoped<GetSearchHistoryDbBusinessService>();
+
+//PersonWords
+builder.Services.AddScoped<PersonWordsDbService>();
+builder.Services.AddScoped<PersonWordsDbBusinessService>();
+
+//Rate
+builder.Services.AddScoped<RateDbService>();
+builder.Services.AddScoped<RateDbBusinessService>();
+
+//SimilarMoviesDbService
+builder.Services.AddScoped<SimilarMoviesDbService>();
+builder.Services.AddScoped<SimilarMoviesDbBusinessService>();
+
+//StringSearch
+builder.Services.AddScoped<StringSearchDbService>();
+builder.Services.AddScoped<StringSearchDbBusinessService>();
+
+//StructuredStringSearch
+builder.Services.AddScoped<StructuredStringSearchService>();
+builder.Services.AddScoped<StructuredStringSearchBusinessService>();
 
 var app = builder.Build();
 
