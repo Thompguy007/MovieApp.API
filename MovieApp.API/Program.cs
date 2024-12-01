@@ -79,6 +79,10 @@ builder.Services.AddScoped<StringSearchDbBusinessService>();
 builder.Services.AddScoped<StructuredStringSearchService>();
 builder.Services.AddScoped<StructuredStringSearchBusinessService>();
 
+//WordToWord
+builder.Services.AddScoped<WordToWordService>();
+builder.Services.AddScoped<WordToWordBusinessService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline

@@ -25,7 +25,7 @@ namespace MovieApp.DataLayer.Services
     [Keyless]
     public class StringSearchResult
     {
-        public string movie_id { get; set; }
-        public string movie_title { get; set; }
+        public string Movie_id { get; set; }
+        public string Movie_title { get; set; }
     }
 }

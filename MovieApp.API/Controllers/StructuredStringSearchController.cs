@@ -1,24 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using MovieApp.BusinessLayer.Services;
 
-[ApiController]
-[Route("api/[controller]")]
-public class StructuredStringSearchController : ControllerBase
+namespace MovieApp.API.Controllers
 {
-    private readonly StructuredStringSearchBusinessService _businessService;
-
-    public StructuredStringSearchController(StructuredStringSearchBusinessService businessService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class StructuredStringSearchController : ControllerBase
     {
-        _businessService = businessService;
-    }
+        private readonly StructuredStringSearchBusinessService _businessService;
 
-    [HttpGet("Search")]
-    public async Task<IActionResult> Search(
-        [FromQuery] string titleOfMovie,
-        [FromQuery] string plotDesc,
-        [FromQuery] string characterName,
-        [FromQuery] string actorName)
-    {
-        var results = await _businessService.SearchAsync(titleOfMovie, plotDesc, characterName, actorName);
-        return Ok(results);
+        public StructuredStringSearchController(StructuredStringSearchBusinessService businessService)
+        {
+            _businessService = businessService;
+        }
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(string titleOfMovie, string plotDesc, string characterName, string actorName)
+        {
+            var results = await _businessService.SearchAsync(titleOfMovie, plotDesc, characterName, actorName);
+            return Ok(results);
+        }
     }
 }

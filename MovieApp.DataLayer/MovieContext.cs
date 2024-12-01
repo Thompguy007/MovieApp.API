@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieApp.DataLayer.Models;
 using MovieApp.DataLayer.Services;
+using static MovieApp.DataLayer.Services.WordToWordService;
 
 namespace MovieApp.DataLayer
 {
@@ -16,7 +17,8 @@ namespace MovieApp.DataLayer
         public DbSet<RatingsForMovieResult> RatingsForMovieResults { get; set; }
         public DbSet<ExactMatchResult> ExactmatchResults { get; set; }
         public DbSet<StringSearchResult> StringSearchResults { get; set; }
-        public DbSet<StructuredStringSearchResult> StructuredStringSearchResults { get; set; }
+        public DbSet<StructuredStringSearchResult> StructuredStringSearchResult { get; set; }
+        public DbSet<WordToWordResult> WordToWordResults { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,6 +68,7 @@ namespace MovieApp.DataLayer
             modelBuilder.Entity<PersonWordsResult>().HasNoKey();
             modelBuilder.Entity<SimilarMoviesResult>().HasNoKey();
             modelBuilder.Entity<StructuredStringSearchResult>().HasNoKey();
+            modelBuilder.Entity<WordToWordResult>().HasNoKey();
 
         }
     }

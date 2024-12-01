@@ -18,7 +18,7 @@ namespace MovieApp.API.Controllers
         }
 
         // API-endpoint til at hente søgeresultater
-        [HttpGet]
+        [HttpGet("Search")]
         public async Task<ActionResult<List<StringSearchResult>>> GetStringSearchResults([FromQuery] string searchName, [FromQuery] int userId)
         {
             var result = await _stringSearchDbBusinessService.GetStringSearchResultsAsync(searchName, userId);

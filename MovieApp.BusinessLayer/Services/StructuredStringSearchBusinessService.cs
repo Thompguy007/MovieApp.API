@@ -1,15 +1,21 @@
-﻿public class StructuredStringSearchBusinessService
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MovieApp.DataLayer.Services;
+
+namespace MovieApp.BusinessLayer.Services
 {
-    private readonly StructuredStringSearchService _searchService;
-
-    public StructuredStringSearchBusinessService(StructuredStringSearchService searchService)
+    public class StructuredStringSearchBusinessService
     {
-        _searchService = searchService;
-    }
+        private readonly StructuredStringSearchService _service;
 
-    public async Task<List<StructuredStringSearchResult>> SearchAsync(
-        string titleOfMovie, string plotDesc, string characterName, string actorName)
-    {
-        return await _searchService.SearchMoviesAsync(titleOfMovie, plotDesc, characterName, actorName);
+        public StructuredStringSearchBusinessService(StructuredStringSearchService service)
+        {
+            _service = service;
+        }
+
+        public async Task<List<StructuredStringSearchResult>> SearchAsync(string titleOfMovie, string plotDesc, string characterName, string actorName)
+        {
+            return await _service.SearchAsync(titleOfMovie, plotDesc, characterName, actorName);
+        }
     }
 }

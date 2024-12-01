@@ -1,25 +1,40 @@
-﻿using MovieApp.DataLayer;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
-public class StructuredStringSearchService
+namespace MovieApp.DataLayer.Services
 {
-    private readonly MovieContext _dbContext;
-
-    public StructuredStringSearchService(MovieContext dbContext)
+    public class StructuredStringSearchService
     {
-        _dbContext = dbContext;
+        private readonly MovieContext _dbContext;
+
+        public StructuredStringSearchService(MovieContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        // Async method to execute the raw SQL query and get the result
+        public async Task<List<StructuredStringSearchResult>> SearchAsync(string titleOfMovie, string plotDesc, string characterName, string actorName)
+        {
+            var query = "SELECT * FROM structured_string_search(@titleOfMovie, @plotDesc, @characterName, @actorName);";
+
+            // Execute the raw SQL query using FromSqlRaw and manually map the result to StructuredStringSearchResult
+            return await _dbContext.StructuredStringSearchResult
+                .FromSqlRaw(query,
+                    new NpgsqlParameter("@titleOfMovie", titleOfMovie ?? (object)DBNull.Value),
+                    new NpgsqlParameter("@plotDesc", plotDesc ?? (object)DBNull.Value),
+                    new NpgsqlParameter("@characterName", characterName ?? (object)DBNull.Value),
+                    new NpgsqlParameter("@actorName", actorName ?? (object)DBNull.Value))
+                .AsNoTracking() // Use AsNoTracking for better performance if no updates are done
+                .ToListAsync();
+        }
     }
 
-    public async Task<List<StructuredStringSearchResult>> SearchMoviesAsync(
-        string titleOfMovie, string plotDesc, string characterName, string actorName)
+    public class StructuredStringSearchResult
     {
-        var query = "SELECT * FROM structured_string_search(@titleOfMovie, @plotDesc, @characterName, @actorName)";
-        return await _dbContext.StructuredStringSearchResults
-            .FromSqlRaw(query,
-                new NpgsqlParameter("titleOfMovie", titleOfMovie ?? (object)DBNull.Value),
-                new NpgsqlParameter("plotDesc", plotDesc ?? (object)DBNull.Value),
-                new NpgsqlParameter("characterName", characterName ?? (object)DBNull.Value),
-                new NpgsqlParameter("actorName", actorName ?? (object)DBNull.Value))
-            .ToListAsync();
+        public string movie_id { get; set; }
+        public string movie_title { get; set; }
     }
 }
+
