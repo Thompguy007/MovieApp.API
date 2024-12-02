@@ -13,11 +13,11 @@ namespace MovieApp.DataLayer.Services
             _dbContext = dbContext;
         }
 
-        // Kald SQL-funktionen find_coplayes
+        // Kald SQL-funktionen find_coplayers
         public async Task<List<CoplayerResult>> FindCoplayersAsync(string actorName)
         {
             // SQL-forespørgslen til at kalde find_coplayes funktionen
-            var query = $"SELECT * FROM find_coplayes('{actorName}')";
+            var query = $"SELECT * FROM find_coplayers('{actorName}')";
 
             // Brug FromSqlRaw til at hente resultaterne
             return await _dbContext.Set<CoplayerResult>()
