@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieApp.BusinessLayer;
+using MovieApp.BusinessLayer.Services;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -41,10 +41,13 @@ public class BookmarkController : ControllerBase
     public async Task<IActionResult> GetBookmarks(int userId)
     {
         var bookmarks = await _bookmarkBusinessService.GetBookmarksByUserIdAsync(userId);
-        if (bookmarks == null || (bookmarks as List<object>).Count == 0)
+
+        // Korrekt check for tom liste eller null
+        if (bookmarks == null || !bookmarks.Any())
         {
             return NotFound("No bookmarks found for the specified user.");
         }
+
         return Ok(bookmarks);
     }
 

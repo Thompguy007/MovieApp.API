@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MovieApp.DataLayer.Models; // Til Bookmark-modellen
 using MovieApp.DataLayer.Services;
 
-namespace MovieApp.BusinessLayer
+namespace MovieApp.BusinessLayer.Services
 {
     public class BookmarkBusinessService
     {
@@ -25,7 +27,7 @@ namespace MovieApp.BusinessLayer
         }
 
         // CRUD: Hent bogmærker efter bruger-ID
-        public async Task<object> GetBookmarksByUserIdAsync(int userId)
+        public async Task<List<Bookmark>> GetBookmarksByUserIdAsync(int userId)
         {
             return await _bookmarkService.GetBookmarksByUserIdAsync(userId);
         }

@@ -25,8 +25,9 @@ namespace MovieApp.DataLayer.Services
                 );
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error adding bookmark using function: {ex.Message}");
                 return false;
             }
         }
@@ -36,14 +37,13 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                await _dbContext.Database.ExecuteSqlRawAsync(
-                    "INSERT INTO bookmarks (user_id, item_type, item_id, annotation) VALUES ({0}, {1}, {2}, {3})",
-                    userId, itemType, itemId, annotation
-                );
+                var query = $"INSERT INTO bookmarks (user_id, item_type, item_id, annotation) VALUES ({userId}, '{itemType}', '{itemId}', '{annotation}')";
+                await _dbContext.Database.ExecuteSqlRawAsync(query);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error adding bookmark: {ex.Message}");
                 return false;
             }
         }
@@ -53,14 +53,15 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                var bookmarks = await _dbContext.bookmarks
-                    .FromSqlRaw("SELECT * FROM get_bookmarks({0})", userId)
+                var bookmarks = await _dbContext.Bookmarks
+                    .FromSqlInterpolated($"SELECT * FROM get_bookmarks({userId})")
                     .ToListAsync();
                 return bookmarks;
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                Console.WriteLine($"Error fetching bookmarks for user ID {userId}: {ex.Message}");
+                return new List<Bookmark>(); // Return a blank list in case of an error
             }
         }
 
@@ -69,14 +70,13 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                await _dbContext.Database.ExecuteSqlRawAsync(
-                    "UPDATE bookmarks SET annotation = {0} WHERE bookmark_id = {1}",
-                    newAnnotation, bookmarkId
-                );
+                await _dbContext.Database.ExecuteSqlInterpolatedAsync(
+                    $"UPDATE bookmarks SET annotation = {newAnnotation} WHERE bookmark_id = {bookmarkId}");
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error updating bookmark ID {bookmarkId}: {ex.Message}");
                 return false;
             }
         }
@@ -86,14 +86,13 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                await _dbContext.Database.ExecuteSqlRawAsync(
-                    "DELETE FROM bookmarks WHERE bookmark_id = {0}",
-                    bookmarkId
-                );
+                await _dbContext.Database.ExecuteSqlInterpolatedAsync(
+                    $"DELETE FROM bookmarks WHERE bookmark_id = {bookmarkId}");
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error deleting bookmark ID {bookmarkId}: {ex.Message}");
                 return false;
             }
         }

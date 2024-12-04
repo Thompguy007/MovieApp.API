@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieApp.DataLayer.Models;
 using MovieApp.DataLayer.Services;
+using System.Linq;
+
 using static MovieApp.DataLayer.Services.WordToWordService;
 
 namespace MovieApp.DataLayer
@@ -9,7 +11,7 @@ namespace MovieApp.DataLayer
     {
         public MovieContext(DbContextOptions<MovieContext> options) : base(options) { }
 
-        public DbSet<Bookmark> bookmarks { get; set; } // DbSet til bookmarks
+        public DbSet<Bookmark> Bookmarks { get; set; } // DbSet til bookmarks
         public DbSet<User> users { get; set; } // DbSet til users
         public DbSet<UserRating> UserRatings { get; set; }
         public DbSet<SearchHistory> SearchHistory { get; set; } // Renamed DbSet for consistency
