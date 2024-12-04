@@ -1,6 +1,29 @@
-@MovieApp.API_HostAddress = http://localhost:5221
+@MovieApp.API_HostAddress = https://localhost:7182
 
-GET {{MovieApp.API_HostAddress}}/weatherforecast/
+
+### Test: Get Bookmarks by ID
+GET {{MovieApp.API_HostAddress}}/api/Bookmark/Get/1
 Accept: application/json
 
-###
+Get {{MovieApp.API_HostAddress}}/api/Users
+
+### Test: Get User by ID
+GET {{MovieApp.API_HostAddress}}/api/User/1
+Accept: application/json
+
+### Test: Get All Users
+GET {{MovieApp.API_HostAddress}}/api/User
+Accept: application/json
+
+### Test: Get Bookmarks by User ID
+GET {{MovieApp.API_HostAddress}}/api/Bookmark/Get/1
+Accept: application/json
+
+
+### Test: Exact Match Search
+GET {{MovieApp.API_HostAddress}}/api/ExactMatch/Search?keyword1=nikolai&keyword2=bunny
+Accept: application/json
+
+### Test: BestMatch
+GET {{MovieApp.API_HostAddress}}/api/BestMatch/Search?keyword1=love&keyword2=comedy&page=1&pageSize=10
+Accept: application/json
