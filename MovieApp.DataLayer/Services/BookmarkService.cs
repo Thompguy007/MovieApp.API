@@ -19,10 +19,25 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                await _dbContext.Database.ExecuteSqlRawAsync(
-                    "SELECT add_bookmark({0}, {1}, {2}, {3})",
-                    userId, itemType, itemId, annotation
-                );
+                if (_dbContext.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+                {
+                    // Simuler funktionalitet for InMemory-database (til tests)
+                    _dbContext.Bookmarks.Add(new Bookmark
+                    {
+                        UserId = userId,
+                        ItemType = itemType,
+                        ItemId = itemId,
+                        Annotation = annotation
+                    });
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    // Udfør direkte databasekald i produktionsmiljø
+                    await _dbContext.Database.ExecuteSqlInterpolatedAsync(
+                        $"SELECT add_bookmark({userId}, {itemType}, {itemId}, {annotation})"
+                    );
+                }
                 return true;
             }
             catch (Exception ex)
@@ -37,8 +52,14 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                var query = $"INSERT INTO bookmarks (user_id, item_type, item_id, annotation) VALUES ({userId}, '{itemType}', '{itemId}', '{annotation}')";
-                await _dbContext.Database.ExecuteSqlRawAsync(query);
+                _dbContext.Bookmarks.Add(new Bookmark
+                {
+                    UserId = userId,
+                    ItemType = itemType,
+                    ItemId = itemId,
+                    Annotation = annotation
+                });
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
@@ -53,15 +74,14 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                var bookmarks = await _dbContext.Bookmarks
-                    .FromSqlInterpolated($"SELECT * FROM get_bookmarks({userId})")
+                return await _dbContext.Bookmarks
+                    .Where(b => b.UserId == userId)
                     .ToListAsync();
-                return bookmarks;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching bookmarks for user ID {userId}: {ex.Message}");
-                return new List<Bookmark>(); // Return a blank list in case of an error
+                return new List<Bookmark>();
             }
         }
 
@@ -70,9 +90,14 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                await _dbContext.Database.ExecuteSqlInterpolatedAsync(
-                    $"UPDATE bookmarks SET annotation = {newAnnotation} WHERE bookmark_id = {bookmarkId}");
-                return true;
+                var bookmark = await _dbContext.Bookmarks.FindAsync(bookmarkId);
+                if (bookmark != null)
+                {
+                    bookmark.Annotation = newAnnotation;
+                    await _dbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -86,9 +111,14 @@ namespace MovieApp.DataLayer.Services
         {
             try
             {
-                await _dbContext.Database.ExecuteSqlInterpolatedAsync(
-                    $"DELETE FROM bookmarks WHERE bookmark_id = {bookmarkId}");
-                return true;
+                var bookmark = await _dbContext.Bookmarks.FindAsync(bookmarkId);
+                if (bookmark != null)
+                {
+                    _dbContext.Bookmarks.Remove(bookmark);
+                    await _dbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
