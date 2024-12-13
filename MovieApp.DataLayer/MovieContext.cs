@@ -23,6 +23,8 @@ namespace MovieApp.DataLayer
         public DbSet<WordToWordResult> WordToWordResults { get; set; }
 
 
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
 

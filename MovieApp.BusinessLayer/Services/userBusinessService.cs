@@ -14,37 +14,33 @@ namespace MovieApp.BusinessLayer
             _userService = userService;
         }
 
-        // Get all users
         public async Task<List<User>> GetAllUsersAsync()
         {
             return await _userService.GetAllUsersAsync();
         }
 
-        // Get a user by ID
         public async Task<User?> GetUserByIdAsync(int userId)
         {
             return await _userService.GetUserByIdAsync(userId);
         }
 
-        // Add a user
-        public async Task<bool> AddUserAsync(int userId, string username, string email, string password, string role, string salt)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _userService.AddUserAsync(userId, username, email, password, role, salt);
+            return await _userService.GetUserByEmailAsync(email);
         }
 
-        // Update a user
-        public async Task<bool> UpdateUserAsync(int userId, string username, string email, string password, string role, string salt)
+
+        public async Task<bool> UpdateUserAsync(int userId, string username, string email, string password, string? role = null)
         {
-            return await _userService.UpdateUserAsync(userId, username, email, password, role, salt);
+            return await _userService.UpdateUserAsync(userId, username, email, password, role);
         }
 
-        // Delete a user
+
         public async Task<bool> DeleteUserAsync(int userId)
         {
             return await _userService.DeleteUserAsync(userId);
         }
 
-        // Add user via database function
         public async Task<bool> AddUserViaFunctionAsync(string username, string email, string password)
         {
             return await _userService.AddUserViaFunctionAsync(username, email, password);

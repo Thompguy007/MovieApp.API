@@ -30,30 +30,18 @@ namespace MovieApp.API.Controllers
             return Ok(user);
         }
 
-        // POST: /api/User/Add
-        [HttpPost("Add")]
-        public async Task<IActionResult> AddUser(int userId, string username, string email, string password, string? role = null, string? salt = null)
-        {
-            var success = await _userBusinessService.AddUserAsync(userId, username, email, password, role, salt);
-            if (success)
-            {
-                return Ok("User added successfully.");
-            }
-            return StatusCode(500, "Failed to add user.");
-        }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateUser(int userId, string username, string email, string password, string? role = null, string? salt = null)
+        public async Task<IActionResult> UpdateUser(int userId, string username, string email, string password, string? role = null)
         {
-            var success = await _userBusinessService.UpdateUserAsync(userId, username, email, password, role, salt);
-
+            var success = await _userBusinessService.UpdateUserAsync(userId, username, email, password, role);
             if (success)
             {
                 return Ok("User updated successfully.");
             }
-
             return StatusCode(500, "Failed to update user.");
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
@@ -75,5 +63,23 @@ namespace MovieApp.API.Controllers
             }
             return StatusCode(500, "Failed to add user via database function.");
         }
+        [HttpGet("Login")]
+        public async Task<IActionResult> Login([FromQuery] string email, [FromQuery] string password)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                return BadRequest("Email and password must be provided.");
+            }
+
+            var user = await _userBusinessService.GetUserByEmailAsync(email);
+            if (user == null || user.Password != password)
+            {
+                return Unauthorized("Invalid email or password.");
+            }
+
+            return Ok($"Welcome {user.Username}!");
+        }
+
+
     }
 }
