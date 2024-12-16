@@ -69,7 +69,7 @@ namespace MovieApp.DataLayer.Services
             try
             {
                 await _dbContext.Database.ExecuteSqlRawAsync(
-                    "SELECT add_user({0}, {1}, {2})",
+                    "SELECT add_user({0}, {1}, {2}) ",
                     username, email, password
                 );
                 return true;
@@ -81,7 +81,8 @@ namespace MovieApp.DataLayer.Services
         }
         public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _dbContext.users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _dbContext.users
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
     }

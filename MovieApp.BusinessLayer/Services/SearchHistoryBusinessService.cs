@@ -14,22 +14,25 @@ namespace MovieApp.BusinessLayer.Services
             _searchHistoryService = searchHistoryService;
         }
 
+        // Get all search history
         public async Task<List<SearchHistory>> GetAllSearchHistoryAsync()
         {
             return await _searchHistoryService.GetAllSearchHistoryAsync();
         }
 
-        public async Task<SearchHistory> GetSearchHistoryByIdAsync(int searchId)
+        // Get search history by ID
+        public async Task<List<SearchHistory>> GetSearchHistoryByUserIdAsync(int userId)
         {
-            return await _searchHistoryService.GetSearchHistoryByIdAsync(searchId);
+            return await _searchHistoryService.GetSearchHistoryByUserIdAsync(userId);
         }
 
+        // Add a search history entry
         public async Task<bool> AddSearchHistoryAsync(SearchHistory searchHistory)
         {
             return await _searchHistoryService.AddSearchHistoryAsync(searchHistory);
         }
 
-
+        // Update a search history entry
         public async Task<bool> UpdateSearchHistoryAsync(int searchId, int userId, string searchTerm, DateTime searchDate)
         {
             var searchHistory = new SearchHistory
@@ -42,6 +45,7 @@ namespace MovieApp.BusinessLayer.Services
             return await _searchHistoryService.UpdateSearchHistoryAsync(searchHistory);
         }
 
+        // Delete a search history entry
         public async Task<bool> DeleteSearchHistoryAsync(int searchId)
         {
             return await _searchHistoryService.DeleteSearchHistoryAsync(searchId);

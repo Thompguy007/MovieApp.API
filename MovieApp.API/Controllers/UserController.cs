@@ -72,13 +72,21 @@ namespace MovieApp.API.Controllers
             }
 
             var user = await _userBusinessService.GetUserByEmailAsync(email);
-            if (user == null || user.Password != password)
+            if (user == null || user.Password != password) // Replace with hashed password check
             {
                 return Unauthorized("Invalid email or password.");
             }
 
-            return Ok($"Welcome {user.Username}!");
+            // Return user details (excluding sensitive information like the raw password)
+            return Ok(new
+            {
+                userId = user.UserId,
+                username = user.Username,
+                email = user.Email,
+                role = user.Role
+            });
         }
+
 
 
     }

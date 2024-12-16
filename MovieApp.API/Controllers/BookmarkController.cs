@@ -38,17 +38,25 @@ public class BookmarkController : ControllerBase
 
     // CRUD: Hent bogmærker efter bruger-ID
     [HttpGet("Get/{userId}")]
-    public async Task<IActionResult> GetBookmarks(int userId)
+    public async Task<IActionResult> GetBookmarks(int userId, int page = 0, int pageSize = 10)
     {
         var bookmarks = await _bookmarkBusinessService.GetBookmarksByUserIdAsync(userId);
 
-        // Korrekt check for tom liste eller null
         if (bookmarks == null || !bookmarks.Any())
         {
             return NotFound("No bookmarks found for the specified user.");
         }
 
-        return Ok(bookmarks);
+        var paginatedBookmarks = bookmarks
+            .Skip(page * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return Ok(new
+        {
+            items = paginatedBookmarks,
+            totalPages = (int)Math.Ceiling((double)bookmarks.Count / pageSize)
+        });
     }
 
     // CRUD: Opdater et bogmærke
